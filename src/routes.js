@@ -4,6 +4,10 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import LoginPage from './components/Auth/LoginPage';
 import MainPage from './components/Main/MainPage';
 import AdminPage from './components/Admin/AdminPage';
+import AdminUsersPage from './components/Admin/AdminUsersPage';
+import AdminFacilitiesPage from './components/Admin/AdminFacilitiesPage';
+import AdminSettingsPage from './components/Admin/AdminSettingsPage';
+
 import { isAuthenticated, checkAdmin } from './api/authCheck';
 
 const PrivateRoute = () => {
@@ -29,7 +33,10 @@ const AppRoutes = () => {
         <Route path="/Main_page" element={<MainPage />} />
         
         <Route element={<AdminRoute />}>
-          <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/Admin_users" element={<AdminUsersPage />} />
+            <Route path="/Admin_Facilities" element={<AdminFacilitiesPage />} />
+            <Route path="/Admin_settings" element={<AdminSettingsPage />} />
         </Route>
       </Route>
 

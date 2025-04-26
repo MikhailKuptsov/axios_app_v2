@@ -1,0 +1,17 @@
+/* src/Styles/underBar_style.css */
+.navbar-underbar {
+    height: 40px;
+    font-size: 0.9rem;
+    background-color: #212529;
+    color: rgba(255, 255, 255, 0.75);
+    transition: opacity 0.3s ease-in-out;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1030;
+  }
+  
+  .navbar-underbar .container {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
