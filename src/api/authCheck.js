@@ -18,7 +18,7 @@ export const getAuthData = () => {
     return !!getAuthData();
   };
   
-  export const isAdmin = () => {
+  export const checkAdmin = () => {
     const userData = getAuthData();
     return userData?.role === 'Admin';
   };

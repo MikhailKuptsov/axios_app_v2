@@ -19,8 +19,8 @@ const MainHeader = () => {
       console.error('Logout failed:', error);
     } finally {
       sessionStorage.removeItem('user_data');
-      setIsLoggingOut(false);
       navigate('/login', { replace: true });
+      setIsLoggingOut(false);
     }
   };
 

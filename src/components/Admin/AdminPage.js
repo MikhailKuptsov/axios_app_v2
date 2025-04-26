@@ -7,7 +7,10 @@ const AdminPage = () => {
     <>
       <MainHeader />
       <div className="container mt-5">
-        <h1 className="text-center">Страница администратора</h1>
+        <h1 className="text-center">Панель администратора</h1>
+        <div className="alert alert-success">
+          Добро пожаловать в административную панель
+        </div>
       </div>
     </>
   );

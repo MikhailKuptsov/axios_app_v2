@@ -11,15 +11,11 @@ export const logoutUser = async () => {
   }
 
   try {
-    // Добавляем искусственную задержку для демонстрации
-    await Promise.all([
-      axios.post(API_URL, {}, {
-        headers: {
-          'api-session-key': userData.api_session_key
-        }
-      }),
-      new Promise(resolve => setTimeout(resolve, 500)) // 1 секунда задержки
-    ]);
+    await axios.post(API_URL, {}, {
+      headers: {
+        'api-session-key': userData.api_session_key
+      }
+    });
   } catch (error) {
     console.error('Logout error:', error);
     throw error;
