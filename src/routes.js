@@ -8,6 +8,7 @@ import AdminUsersPage from './components/Admin/AdminUsersPage';
 import AdminFacilitiesPage from './components/Admin/AdminFacilitiesPage';
 import AdminSettingsPage from './components/Admin/AdminSettingsPage';
 import CreateUserPage from './components/Admin/CreateUserPage';
+import CreateFacilityPage from './components/Admin/CreateFacilityPage';
 
 import { isAuthenticated, checkAdmin } from './api/authCheck';
 
@@ -38,6 +39,7 @@ const AppRoutes = () => {
             <Route path="/Admin_users" element={<AdminUsersPage />} />
             <Route path="/Admin_users/create" element={<CreateUserPage />} />
             <Route path="/Admin_Facilities" element={<AdminFacilitiesPage />} />
+            <Route path="/Admin_Facilities/create" element={<CreateFacilityPage />} />
             <Route path="/Admin_settings" element={<AdminSettingsPage />} />
         </Route>
       </Route>

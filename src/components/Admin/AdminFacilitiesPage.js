@@ -1,13 +1,20 @@
 // src/components/Admin/AdminFacilitiesPage.js
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-bootstrap';
 import MainHeader from '../Main/MainHeader';
 import LoadingStuck from '../UI/LoadingStuck';
 import { GetFacilitiesAll } from '../../api/GetFacilitiesAll';
+import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const AdminFacilitiesPage = () => {
+  const location = useLocation();
+  const [alert, setAlert] = useState(location.state?.alert || null);
   const [facilities, setFacilities] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,57 +31,48 @@ const AdminFacilitiesPage = () => {
     fetchData();
   }, []);
 
+  const handleCreateFacility = () => {
+    navigate('/Admin_Facilities/create');
+  };
+
   return (
     <>
       <MainHeader />
       <div className="container mt-5">
-        <h1 className="text-center">Управление заводами</h1>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1 className="mb-0">Управление заводами</h1>
+          <Button 
+            variant="primary"
+            onClick={handleCreateFacility}
+          >
+            Создать завод
+          </Button>
+        </div>
+        <div>
+        {alert && (
+          <Alert 
+            variant={alert.variant} 
+            onClose={() => setAlert(null)} 
+            dismissible
+            className="mt-3"
+          >
+            {alert.message}
+          </Alert>
+        )}
+        </div>
         
         {isLoading ? (
           <LoadingStuck />
         ) : error ? (
-          <div className="alert alert-danger mt-4">
+          <div className="alert alert-danger mt-3">
             <h4>Ошибка {error.code || 'неизвестна'}</h4>
-            <p className="mb-0">{error.message}</p>
-            {error.details && (
-              <pre className="mt-2 mb-0">{JSON.stringify(error.details, null, 2)}</pre>
-            )}
+            <p>{error.message}</p>
           </div>
         ) : (
           <div className="mt-4">
             <pre className="bg-light p-3 rounded">
               {JSON.stringify(facilities, null, 2)}
             </pre>
-            
-            {/* Пример вывода в таблице (раскомментировать при необходимости) */}
-            {/* 
-            <div className="table-responsive mt-3">
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Название</th>
-                    <th>Адрес</th>
-                    <th>Статус</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {facilities.map(facility => (
-                    <tr key={facility.id}>
-                      <td>{facility.id}</td>
-                      <td>{facility.name}</td>
-                      <td>{facility.address}</td>
-                      <td>
-                        <span className={`badge ${facility.active ? 'bg-success' : 'bg-secondary'}`}>
-                          {facility.active ? 'Активен' : 'Неактивен'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div> 
-            */}
           </div>
         )}
       </div>

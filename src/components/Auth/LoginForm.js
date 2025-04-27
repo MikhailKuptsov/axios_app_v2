@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../api/auth';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import ErrorAlert from '../UI/ErrorAlert';
+import CheckCapsLock from '../UI/CheckCapsLock'; // Импортируем компонент
 
 const LoginForm = () => {
     const [credentials, setCredentials] = useState({
@@ -74,7 +75,9 @@ const LoginForm = () => {
                     value={credentials.password}
                     onChange={handleChange}
                     required
+                    onKeyUp={(e) => e.getModifierState('CapsLock')} // Для корректной работы в Firefox
                   />
+                  <CheckCapsLock /> {/* Добавляем проверку CapsLock */}
                 </div>
                 <button type="submit" className="btn btn-primary w-100">Login</button>
               </form>
