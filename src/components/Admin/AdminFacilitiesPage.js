@@ -1,20 +1,23 @@
 // src/components/Admin/AdminFacilitiesPage.js
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-bootstrap';
 import MainHeader from '../Main/MainHeader';
 import LoadingStuck from '../UI/LoadingStuck';
 import { GetFacilitiesAll } from '../../api/GetFacilitiesAll';
-import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Button, Alert } from 'react-bootstrap';
+import { useNavigate, useLocation } from 'react-router-dom';
+import CardFacilities from '../UI/CardFacilities';
 
 const AdminFacilitiesPage = () => {
-  const location = useLocation();
-  const [alert, setAlert] = useState(location.state?.alert || null);
   const [facilities, setFacilities] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [alert, setAlert] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setAlert(location.state?.alert || null);
+  }, [location]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,44 +38,49 @@ const AdminFacilitiesPage = () => {
     navigate('/Admin_Facilities/create');
   };
 
+  if (isLoading) {
+    return <LoadingStuck />;
+  }
+
   return (
     <>
       <MainHeader />
       <div className="container mt-5">
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <h1 className="mb-0">Управление заводами</h1>
-          <Button 
-            variant="primary"
-            onClick={handleCreateFacility}
-          >
-            Создать завод
-          </Button>
-        </div>
-        <div>
         {alert && (
           <Alert 
             variant={alert.variant} 
             onClose={() => setAlert(null)} 
             dismissible
-            className="mt-3"
+            className="mb-4"
           >
             {alert.message}
           </Alert>
         )}
+
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1>Управление заводами</h1>
+          <Button variant="primary" onClick={handleCreateFacility}>
+            Создать завод
+          </Button>
         </div>
         
-        {isLoading ? (
-          <LoadingStuck />
-        ) : error ? (
-          <div className="alert alert-danger mt-3">
+        {error ? (
+          <Alert variant="danger">
             <h4>Ошибка {error.code || 'неизвестна'}</h4>
             <p>{error.message}</p>
-          </div>
+          </Alert>
         ) : (
-          <div className="mt-4">
-            <pre className="bg-light p-3 rounded">
-              {JSON.stringify(facilities, null, 2)}
-            </pre>
+          <div className="row">
+            {facilities?.map(facility => (
+              <div className="col-md-6 col-lg-4 mb-4" key={facility._id}>
+                <CardFacilities
+                  data_id={facility._id}
+                  data_short_name={facility.short_name}
+                  data_full_name={facility.full_name}
+                  data_description={facility.description}
+                />
+              </div>
+            ))}
           </div>
         )}
       </div>

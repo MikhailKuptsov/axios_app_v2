@@ -1,0 +1,33 @@
+/* src/Styles/facilities.css */
+.facility-card {
+    height: 100%;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .facility-card .card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .facility-card .card-title h5 {
+    font-weight: 600;
+    color: #1c3572;
+    margin-bottom: 0.25rem;
+  }
+  
+  .facility-card .card-title h6 {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  
+  .facility-card .card-text {
+    flex-grow: 1;
+  }
+  
+  .facility-card .small {
+    font-size: 0.8rem;
+    color: #868e96;
+    border-top: 1px solid #f1f1f1;
+    padding-top: 0.5rem;
+  }
