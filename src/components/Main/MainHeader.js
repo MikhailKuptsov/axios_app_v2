@@ -5,6 +5,9 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { logoutUser } from '../../api/authLogout';
 import LoadingSpinner from '../UI/LoadingSpinner';
 
+// Импорт стилей
+import "../../Styles/MainHeader.css"
+
 const MainHeader = () => {
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -29,7 +32,7 @@ const MainHeader = () => {
   }
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
+    <Navbar expand="lg" className="main-header">
       <Container>
         <Navbar.Brand>My App</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
