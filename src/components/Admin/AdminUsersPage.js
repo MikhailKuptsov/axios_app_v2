@@ -75,7 +75,7 @@ const AdminUsersPage = () => {
         ) : (
           <div className="row">
             {users && users.map(user => (
-              <div className="col-md-4 mb-4" key={user.username}>
+              <div className="col-md-4 mb-4" key={user._id}>
                 <CardUser
                   data_username={user.username}
                   data_surname={user.surname || 'Не указано'}

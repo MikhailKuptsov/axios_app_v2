@@ -5,6 +5,7 @@ import LoginPage from './components/Auth/LoginPage';
 import MainPage from './components/Main/MainPage';
 import AdminPage from './components/Admin/AdminPage';
 import AdminUsersPage from './components/Admin/AdminUsersPage';
+import UserInfo from './components/Admin/UserInfo';
 import AdminFacilitiesPage from './components/Admin/AdminFacilitiesPage';
 import AdminSettingsPage from './components/Admin/AdminSettingsPage';
 import CreateUserPage from './components/Admin/CreateUserPage';
@@ -38,9 +39,11 @@ const AppRoutes = () => {
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/Admin_users" element={<AdminUsersPage />} />
             <Route path="/Admin_users/create" element={<CreateUserPage />} />
+            <Route path="/Admin_users/user_info/:username" element={<UserInfo />} />
             <Route path="/Admin_Facilities" element={<AdminFacilitiesPage />} />
             <Route path="/Admin_Facilities/create" element={<CreateFacilityPage />} />
             <Route path="/Admin_settings" element={<AdminSettingsPage />} />
+            
         </Route>
       </Route>
 
