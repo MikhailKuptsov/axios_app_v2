@@ -2,21 +2,15 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import RoleInterface from './RoleInterface';
-import { useNavigate } from 'react-router-dom';
 
 const CardUser = ({ 
   data_username, 
   data_surname, 
   data_name, 
   data_patronymic, 
-  data_role
+  data_role,
+  onSelect
 }) => {
-  const navigate = useNavigate();
-
-  const handleSelect = () => {
-    navigate(`/Admin_users/user_info/${data_username}`); // Используем username вместо ID
-  };
-
   return (
     <Card className="mb-3 shadow-sm">
       <Card.Body>
@@ -39,7 +33,7 @@ const CardUser = ({
           <Button 
             variant="outline-primary"
             size="sm"
-            onClick={handleSelect}
+            onClick={onSelect}
             className="w-100"
           >
             Выбрать

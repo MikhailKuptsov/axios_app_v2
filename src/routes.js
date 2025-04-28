@@ -34,12 +34,13 @@ const AppRoutes = () => {
       
       <Route element={<PrivateRoute />}>
         <Route path="/Main_page" element={<MainPage />} />
+        <Route path="/User_info/:username" element={<UserInfo />} />
         
         <Route element={<AdminRoute />}>
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/Admin_users" element={<AdminUsersPage />} />
             <Route path="/Admin_users/create" element={<CreateUserPage />} />
-            <Route path="/Admin_users/user_info/:username" element={<UserInfo />} />
+            {/* <Route path="/Admin_users/user_info/:username" element={<UserInfo />} /> */}
             <Route path="/Admin_Facilities" element={<AdminFacilitiesPage />} />
             <Route path="/Admin_Facilities/create" element={<CreateFacilityPage />} />
             <Route path="/Admin_settings" element={<AdminSettingsPage />} />

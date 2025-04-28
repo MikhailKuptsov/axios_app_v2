@@ -2,21 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import MainHeader from '../Main/MainHeader';
 import LoadingStuck from '../UI/LoadingStuck';
-import { Alert } from 'react-bootstrap';
-
 import { GetUsersAll } from '../../api/GetUsersAll';
-import { Button } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
-import CardUser from '../UI/CardUser';
+import BlockAllUsersCards from './BlockAllUsersCards';
+import SimpleUserInfoForm from './SimpleUserInfoForm';
 
 const AdminUsersPage = () => {
-  const location = useLocation();
-  const [alert, setAlert] = useState(location.state?.alert || null);
-
   const [users, setUsers] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [alert, setAlert] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     setAlert(location.state?.alert || null);
@@ -38,7 +37,15 @@ const AdminUsersPage = () => {
   }, []);
 
   const handleCreateUser = () => {
-    navigate('/Admin_users/create'); // Маршрут для создания пользователя
+    navigate('/Admin_users/create');
+  };
+
+  const handleSelectUser = (user) => {
+    setSelectedUser(user);
+  };
+
+  const handleBackToList = () => {
+    setSelectedUser(null);
   };
 
   if (isLoading) {
@@ -61,10 +68,14 @@ const AdminUsersPage = () => {
         )}
 
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h1 className="mb-0">Управление пользователями</h1>
-          <Button variant="primary" onClick={handleCreateUser}>
-            Создать пользователя
-          </Button>
+          <h1 className="mb-0">
+            {selectedUser ? `Пользователь: ${selectedUser.username}` : 'Управление пользователями'}
+          </h1>
+          {!selectedUser && (
+            <Button variant="primary" onClick={handleCreateUser}>
+              Создать пользователя
+            </Button>
+          )}
         </div>
         
         {error ? (
@@ -72,20 +83,16 @@ const AdminUsersPage = () => {
             <h4>Ошибка {error.code}</h4>
             <p>{error.message}</p>
           </div>
+        ) : selectedUser ? (
+          <SimpleUserInfoForm 
+            userData={selectedUser} 
+            onBack={handleBackToList}
+          />
         ) : (
-          <div className="row">
-            {users && users.map(user => (
-              <div className="col-md-4 mb-4" key={user._id}>
-                <CardUser
-                  data_username={user.username}
-                  data_surname={user.surname || 'Не указано'}
-                  data_name={user.name || 'Не указано'}
-                  data_patronymic={user.patronymic || 'Не указано'}
-                  data_role={user.role || 'User'}
-                />
-              </div>
-            ))}
-          </div>
+          <BlockAllUsersCards 
+            users={users || []} 
+            onSelectUser={handleSelectUser}
+          />
         )}
       </div>
     </>

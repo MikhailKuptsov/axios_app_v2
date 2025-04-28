@@ -14,6 +14,11 @@ const MainHeader = () => {
   const userData = JSON.parse(sessionStorage.getItem('user_data'));
   const isAdmin = userData?.role === 'Admin';
 
+  
+  const handleProfileClick = () => {
+    navigate(`/User_info/${userData.username}`); // Убираем @ из URL
+  };
+
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
@@ -39,6 +44,7 @@ const MainHeader = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link onClick={() => navigate('/Main_page')}>Главная страница</Nav.Link>
+            <Nav.Link onClick={handleProfileClick}>Профиль</Nav.Link>
             {isAdmin && (
               <Nav.Link onClick={() => navigate('/admin')}>Администратор</Nav.Link>
             )}

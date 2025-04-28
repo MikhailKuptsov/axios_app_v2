@@ -1,31 +1,59 @@
 // src/components/Admin/UserInfo.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MainHeader from '../Main/MainHeader';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
+import { GetUserInfo } from '../../api/GetUserInfo';
+import LoadingStuck from '../UI/LoadingStuck';
+import UserInfoForm from './UserInfoForm';
 
 const UserInfo = () => {
-  const { username } = useParams(); // Теперь получаем username
-  const navigate = useNavigate();
+  const { username } = useParams();
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Удаляем @ из username если он есть
+        const cleanUsername = username.startsWith('@') ? username.slice(1) : username;
+        const data = await GetUserInfo(cleanUsername);
+        setUserData(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchUserData();
+  }, [username]);
+
+  if (isLoading) {
+    return <LoadingStuck message="Загрузка данных пользователя..." />;
+  }
+
+  if (error) {
+    return (
+      <>
+        <MainHeader />
+        <div className="container mt-5">
+          <Alert variant="danger">
+            <h4>Ошибка {error.code || 'неизвестна'}</h4>
+            <p>{error.message}</p>
+          </Alert>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <MainHeader />
       <div className="container mt-5">
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <h1>Информация о пользователе</h1>
-          <Button 
-            variant="secondary" 
-            onClick={() => navigate('/Admin_users')}
-          >
-            Назад к списку
-          </Button>
-        </div>
-        
-        <div className="card p-4">
-          <h4>Детальная информация о пользователе: {username}</h4>
-          <p className="text-muted">Здесь будет полная информация о пользователе {username}</p>
-        </div>
+        <h1 className="mb-4">Информация о пользователе</h1>
+        {userData && <UserInfoForm userData={userData} />}
       </div>
     </>
   );
