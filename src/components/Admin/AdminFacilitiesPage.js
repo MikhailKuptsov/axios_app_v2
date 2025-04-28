@@ -5,13 +5,15 @@ import LoadingStuck from '../UI/LoadingStuck';
 import { GetFacilitiesAll } from '../../api/GetFacilitiesAll';
 import { Button, Alert } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
-import CardFacilities from '../UI/CardFacilities';
+import BlockAllFacilitiesCards from './BlockAllFacilitiesCards';
+import SimpleFacilityInfoForm from './SimpleFacilityInfoForm'; // Создайте аналогичный компонент для заводов
 
 const AdminFacilitiesPage = () => {
   const [facilities, setFacilities] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [alert, setAlert] = useState(null);
+  const [selectedFacility, setSelectedFacility] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,6 +40,14 @@ const AdminFacilitiesPage = () => {
     navigate('/Admin_Facilities/create');
   };
 
+  const handleSelectFacility = (facility) => {
+    setSelectedFacility(facility);
+  };
+
+  const handleBackToList = () => {
+    setSelectedFacility(null);
+  };
+
   if (isLoading) {
     return <LoadingStuck />;
   }
@@ -58,10 +68,17 @@ const AdminFacilitiesPage = () => {
         )}
 
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h1>Управление заводами</h1>
-          <Button variant="primary" onClick={handleCreateFacility}>
-            Создать завод
-          </Button>
+          <h1 className="mb-0">
+            {selectedFacility 
+              ? `Завод: ${selectedFacility.short_name}` 
+              : 'Управление заводами'
+            }
+          </h1>
+          {!selectedFacility && (
+            <Button variant="primary" onClick={handleCreateFacility}>
+              Создать завод
+            </Button>
+          )}
         </div>
         
         {error ? (
@@ -69,19 +86,16 @@ const AdminFacilitiesPage = () => {
             <h4>Ошибка {error.code || 'неизвестна'}</h4>
             <p>{error.message}</p>
           </Alert>
+        ) : selectedFacility ? (
+          <SimpleFacilityInfoForm 
+            facilityData={selectedFacility} 
+            onBack={handleBackToList}
+          />
         ) : (
-          <div className="row">
-            {facilities?.map(facility => (
-              <div className="col-md-6 col-lg-4 mb-4" key={facility._id}>
-                <CardFacilities
-                  data_id={facility._id}
-                  data_short_name={facility.short_name}
-                  data_full_name={facility.full_name}
-                  data_description={facility.description}
-                />
-              </div>
-            ))}
-          </div>
+          <BlockAllFacilitiesCards 
+            facilities={facilities || []} 
+            onSelectFacility={handleSelectFacility}
+          />
         )}
       </div>
     </>

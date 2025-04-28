@@ -1,12 +1,13 @@
 // src/components/UI/CardFacilities.js
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 
 const CardFacilities = ({ 
   data_id,
   data_short_name, 
   data_full_name, 
-  data_description 
+  data_description,
+  onSelect
 }) => {
   return (
     <Card className="mb-4 facility-card" style={{ height: '100%' }}>
@@ -23,6 +24,13 @@ const CardFacilities = ({
         <div className="mt-auto pt-2 text-muted small">
           ID: {data_id}
         </div>
+        <Button 
+          variant="outline-primary"
+          onClick={onSelect}
+          className="mt-3"
+        >
+          Выбрать
+        </Button>
       </Card.Body>
     </Card>
   );
